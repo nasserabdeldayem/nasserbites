@@ -1,0 +1,43 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { getListing } from "../../../lib/posts";
+
+const posts = await getListing("bites", "ar");
+---
+
+<Layout title="البايتس — Nasser’s Bites" lang="ar">
+  <section class="listing">
+    <p class="eyebrow">ملاحظات قصيرة</p>
+    <h1 class="page-title">البايتس</h1>
+    <p class="page-intro">
+      شروحات صغيرة ومركّزة — سؤال واحد، وفكرة واحدة في كل مرة.
+    </p>
+
+    <div class="grid">
+      {posts.map((post) => <PostCard post={post} pageLang="ar" />)}
+    </div>
+    {posts.length === 0 && <p class="page-intro">أول البايتس ما زالت قيد التحضير.</p>}
+  </section>
+</Layout>
+
+<style>
+.listing {
+  padding: 80px 0 120px;
+}
+
+.page-title {
+  line-height: 1.4;
+}
+
+.page-intro {
+  max-width: 600px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+</style>

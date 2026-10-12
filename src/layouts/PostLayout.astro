@@ -1,0 +1,127 @@
+---
+import Layout from "./Layout.astro";
+import { stages, formatDate, type Post } from "../lib/posts";
+import { useTranslations } from "../i18n/ui";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, lang, stage, planted, tended, topics, draft } = post.data;
+const t = useTranslations(lang);
+const isBite = post.collection === "bites";
+const backHref = `${lang === "ar" ? "/ar" : ""}/${post.collection}`;
+---
+
+<Layout title={`${title} — Nasser’s Bites`} description={description} lang={lang}>
+  <article class="post">
+    <a class="back-link" href={backHref}>{isBite ? t.allBites : t.allArticles}</a>
+
+    <p class="eyebrow">
+      {isBite ? t.bite : t.article}{topics.length > 0 && ` · ${topics.join(" · ")}`}
+      {draft && <span class="draft">{t.draft}</span>}
+    </p>
+
+    <h1>{title}</h1>
+
+    <p class="lead">{description}</p>
+
+    <dl class="meta">
+      <div>
+        <dt>{t.stage}</dt>
+        <dd>{stages[stage].icon} {t.stages[stage]}</dd>
+      </div>
+      <div>
+        <dt>{t.planted}</dt>
+        <dd><time datetime={planted.toISOString()}>{formatDate(planted, lang)}</time></dd>
+      </div>
+      {tended && (
+        <div>
+          <dt>{t.tended}</dt>
+          <dd><time datetime={tended.toISOString()}>{formatDate(tended, lang)}</time></dd>
+        </div>
+      )}
+    </dl>
+
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style>
+.post {
+  max-width: var(--prose-width);
+  margin: 0 auto;
+  padding: 80px 0 120px;
+}
+
+.eyebrow {
+  margin: 70px 0 25px;
+}
+
+.draft {
+  margin-inline-start: 10px;
+  padding: 2px 8px;
+  border: 1px dashed var(--accent);
+  border-radius: 3px;
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 7vw, 76px);
+  line-height: 1;
+  font-weight: 500;
+  margin: 0 0 35px;
+}
+
+.lead {
+  font-size: 22px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0 0 35px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  margin: 0 0 60px;
+  padding: 18px 0;
+  border-block: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.meta dt {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.meta dd {
+  margin: 0;
+}
+
+/* Naskh needs more vertical room than Fraunces */
+:global([lang="ar"]) h1 {
+  line-height: 1.4;
+}
+
+:global([lang="ar"]) .meta dt {
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+@media (max-width: 700px) {
+  .post {
+    padding: 50px 0 80px;
+  }
+
+  .lead {
+    font-size: 19px;
+  }
+}
+</style>

@@ -1,0 +1,79 @@
+---
+import { stages, urlOf, type Post } from "../lib/posts";
+import { useTranslations } from "../i18n/ui";
+
+interface Props {
+  post: Post;
+  // Language of the page the card sits on; a post in another language gets a badge
+  pageLang?: "en" | "ar";
+}
+
+const { post, pageLang = "en" } = Astro.props;
+const { title, description, stage, topics, lang } = post.data;
+const t = useTranslations(lang);
+---
+
+<article class="card" lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
+  <p class="card-meta">
+    <span title={t.stages[stage]}>{stages[stage].icon}</span>
+    {post.collection === "bites" ? t.bite : t.article}
+    {topics[0] && <span>· {topics[0]}</span>}
+    {lang !== pageLang && <span class="lang-badge">{t.langName}</span>}
+  </p>
+  <h3><a href={urlOf(post)}>{title}</a></h3>
+  <p class="card-desc">{description}</p>
+</article>
+
+<style>
+.card {
+  position: relative;
+  padding: 28px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.15s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.card-meta {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.lang-badge {
+  margin-inline-start: 6px;
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+}
+
+h3 {
+  font-family: var(--font-serif);
+  font-size: 25px;
+  line-height: 1.15;
+  font-weight: 500;
+  margin: 20px 0 15px;
+}
+
+h3 a {
+  text-decoration: none;
+}
+
+/* Make the whole card clickable */
+h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.card-desc {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+</style>

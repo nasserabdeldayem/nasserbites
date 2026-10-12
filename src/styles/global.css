@@ -1,0 +1,185 @@
+/* Design tokens */
+:root {
+  --bg: #f8f3eb;
+  --surface: #fbf8f2;
+  --border: #d8d0c5;
+  --text: #292725;
+  --text-body: #3f3b37;
+  --text-muted: #5f5a54;
+  --accent: #e87532;
+
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --page-width: 1160px;
+  --prose-width: 760px;
+  --gutter: 30px;
+}
+
+/* Arabic: swap fonts, drop letter-spacing (it breaks joined letters) */
+[lang="ar"] {
+  --font-serif: "Noto Naskh Arabic", "Fraunces", serif;
+  --font-sans: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+}
+
+[lang="ar"] .eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 15px;
+}
+
+[lang="ar"] .prose {
+  line-height: 2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+main {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Shared bits */
+.eyebrow {
+  color: var(--accent);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.narrow {
+  max-width: var(--prose-width);
+  margin: 0 auto;
+  padding: 80px 0 120px;
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 8vw, 80px);
+  line-height: 1.05;
+  font-weight: 500;
+  margin: 25px 0;
+}
+
+.page-intro {
+  font-size: 20px;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+/* Long-form text rendered from Markdown */
+.prose {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+
+.prose h2,
+.prose h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+.prose h2 {
+  font-size: 38px;
+  margin: 65px 0 20px;
+}
+
+.prose h3 {
+  font-size: 28px;
+  margin: 45px 0 15px;
+}
+
+.prose a {
+  color: var(--text);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.prose a:hover {
+  color: var(--accent);
+}
+
+.prose blockquote {
+  margin: 35px 0;
+  padding: 18px 24px;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+  font-family: var(--font-serif);
+  font-size: 21px;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.4em;
+}
+
+.prose code {
+  font-size: 0.9em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  .narrow {
+    padding: 50px 0 80px;
+  }
+
+  .page-intro {
+    font-size: 18px;
+  }
+
+  .prose {
+    font-size: 17px;
+  }
+
+  .prose h2 {
+    font-size: 32px;
+  }
+}

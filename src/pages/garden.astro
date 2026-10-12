@@ -1,0 +1,77 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getAllPosts, stages } from "../lib/posts";
+
+const posts = await getAllPosts("en");
+const topics = [...new Set(posts.flatMap((p) => p.data.topics))].sort();
+---
+
+<Layout title="The Garden — Nasser’s Bites" description="A growing collection of notes, bites and articles.">
+  <section class="garden">
+    <p class="eyebrow">A growing collection of ideas</p>
+    <h1 class="page-title">The Garden</h1>
+
+    <p class="page-intro">
+      Not everything here is a finished article. Some ideas are
+      early notes, some are questions, and others are connections
+      I'm still trying to understand.
+    </p>
+
+    <ul class="legend">
+      {Object.values(stages).map((s) => <li>{s.icon} {s.label}</li>)}
+    </ul>
+
+    {topics.length > 0 && (
+      <div class="topics">
+        {topics.map((t) => <span>{t}</span>)}
+      </div>
+    )}
+
+    <div class="grid">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</Layout>
+
+<style>
+.garden {
+  padding: 80px 0 120px;
+}
+
+.page-intro {
+  max-width: 620px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 35px 0 25px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.topics span {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 50px;
+}
+</style>

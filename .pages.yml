@@ -1,0 +1,107 @@
+# Pages CMS config — edit posts from any browser (incl. your phone) at https://app.pagescms.org
+# Fields mirror the schema in src/content.config.ts
+
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: bites-en
+    label: Bites · English
+    type: collection
+    path: src/content/bites/en
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.mdx"
+      field: create
+    view:
+      fields: [title, stage, draft, planted]
+      primary: title
+      sort: planted
+      order: desc
+    fields:
+      - &title { name: title, label: Title, type: string, required: true }
+      - &description { name: description, label: Description, type: text, required: true }
+      - { name: lang, label: Language, type: select, default: en, options: { values: [en, ar] } }
+      - &translationKey { name: translationKey, label: Translation key, type: string, description: "Same key on the English and Arabic versions, e.g. glp-1" }
+      - &stage { name: stage, label: Stage, type: select, default: seedling, options: { values: [{ name: seedling, label: 🌱 Seedling }, { name: budding, label: 🌿 Budding }, { name: evergreen, label: 🌳 Evergreen }] } }
+      - &planted { name: planted, label: Planted, type: date, required: true, options: { format: yyyy-MM-dd } }
+      - &tended { name: tended, label: Last tended, type: date, default: "", options: { format: yyyy-MM-dd } }
+      - &topics { name: topics, label: Topics, type: string, list: true }
+      - &draft { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
+      - &body { name: body, label: Body, type: rich-text, options: { format: markdown } }
+
+  - name: bites-ar
+    label: Bites · العربية
+    type: collection
+    path: src/content/bites/ar
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.mdx"
+      field: create
+    view:
+      fields: [title, stage, draft, planted]
+      primary: title
+      sort: planted
+      order: desc
+    fields:
+      - *title
+      - *description
+      - { name: lang, label: Language, type: select, default: ar, options: { values: [en, ar] } }
+      - *translationKey
+      - *stage
+      - *planted
+      - *tended
+      - *topics
+      - *draft
+      - *body
+
+  - name: articles-en
+    label: Articles · English
+    type: collection
+    path: src/content/articles/en
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.mdx"
+      field: create
+    view:
+      fields: [title, stage, draft, planted]
+      primary: title
+      sort: planted
+      order: desc
+    fields:
+      - *title
+      - *description
+      - { name: lang, label: Language, type: select, default: en, options: { values: [en, ar] } }
+      - *translationKey
+      - *stage
+      - *planted
+      - *tended
+      - *topics
+      - *draft
+      - *body
+
+  - name: articles-ar
+    label: Articles · العربية
+    type: collection
+    path: src/content/articles/ar
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.mdx"
+      field: create
+    view:
+      fields: [title, stage, draft, planted]
+      primary: title
+      sort: planted
+      order: desc
+    fields:
+      - *title
+      - *description
+      - { name: lang, label: Language, type: select, default: ar, options: { values: [en, ar] } }
+      - *translationKey
+      - *stage
+      - *planted
+      - *tended
+      - *topics
+      - *draft
+      - *body
