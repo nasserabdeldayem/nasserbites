@@ -1,0 +1,121 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { useTranslations, prefixOf, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const copy = {
+  en: {
+    back: "← Back to Home",
+    eyebrow: "A little about this corner of the internet",
+    title: "Hello, curious mind.",
+    intro:
+      "I'm a pharmacist who enjoys asking questions about medicines, exploring the science behind everyday practice, and learning something new along the way.",
+    sections: [
+      {
+        heading: "Why Nasser’s Bites?",
+        body: "Some ideas deserve more than a passing thought, but not every idea needs a full-length article. This is my place to collect small explanations, useful references, unanswered questions, and connections worth exploring.",
+      },
+      {
+        heading: "How I think about learning",
+        body: "I believe understanding grows when we break complicated topics into smaller pieces, question what we read, and connect new knowledge to what we already know.",
+      },
+    ],
+    signature: "Small pieces. Open questions. A garden still growing.",
+  },
+  ar: {
+    back: "→ العودة للرئيسية",
+    eyebrow: "قليل عن هذه الزاوية من الإنترنت",
+    title: "أهلاً، أيها الفضولي.",
+    intro:
+      "أنا صيدلي أحب طرح الأسئلة عن الأدوية، واستكشاف العلم وراء الممارسة اليومية، وتعلّم شيء جديد على الطريق.",
+    sections: [
+      {
+        heading: "لماذا Nasser’s Bites؟",
+        body: "بعض الأفكار تستحق أكثر من مرور عابر، لكن ليست كل فكرة بحاجة إلى مقال كامل. هذا مكاني لجمع الشروحات الصغيرة، والمراجع المفيدة، والأسئلة التي لم تُجب بعد، والروابط التي تستحق الاستكشاف.",
+      },
+      {
+        heading: "كيف أفكر في التعلّم",
+        body: "أؤمن أن الفهم ينمو حين نقسّم المواضيع المعقدة إلى أجزاء صغيرة، ونسائل ما نقرأ، ونربط المعرفة الجديدة بما نعرفه مسبقاً.",
+      },
+    ],
+    signature: "أجزاء صغيرة. أسئلة مفتوحة. حديقة ما زالت تنمو.",
+  },
+}[lang];
+---
+
+<Layout title={`${t.nav.about} — ${t.brand}`} lang={lang}>
+  <article class="narrow">
+    <a class="back-link" href={prefixOf(lang) || "/"}>{copy.back}</a>
+    <p class="eyebrow">{copy.eyebrow}</p>
+
+    <h1 class="page-title">{copy.title}</h1>
+
+    <p class="page-intro">{copy.intro}</p>
+
+    {copy.sections.map((s) => (
+      <section>
+        <h2>{s.heading}</h2>
+        <p>{s.body}</p>
+      </section>
+    ))}
+
+    <section class="signature">
+      <p>{copy.signature}</p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+.back-link {
+  margin-bottom: 45px;
+}
+
+section {
+  margin-top: 65px;
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 36px;
+  margin-bottom: 18px;
+}
+
+section p {
+  font-size: 18px;
+  line-height: 1.85;
+  color: var(--text-body);
+}
+
+:global([lang="ar"]) section p {
+  line-height: 2;
+}
+
+.signature {
+  padding: 22px 26px;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface);
+}
+
+.signature p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 22px;
+}
+
+@media (max-width: 700px) {
+  h2 {
+    font-size: 30px;
+  }
+
+  section p {
+    font-size: 17px;
+  }
+}
+</style>

@@ -1,0 +1,97 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getAllPosts, stages } from "../lib/posts";
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const posts = await getAllPosts(lang);
+const topics = [...new Set(posts.flatMap((p) => p.data.topics))].sort();
+
+const copy = {
+  en: {
+    eyebrow: "A growing collection of ideas",
+    description: "A growing collection of notes, bites and articles.",
+    intro:
+      "Not everything here is a finished article. Some ideas are early notes, some are questions, and others are connections I'm still trying to understand.",
+  },
+  ar: {
+    eyebrow: "مجموعة أفكار تنمو",
+    description: "مجموعة متنامية من الملاحظات والبايتس والمقالات.",
+    intro:
+      "ليس كل ما هنا مقالاً مكتملاً. بعض الأفكار ملاحظات أولية، وبعضها أسئلة، وبعضها روابط ما زلت أحاول فهمها.",
+  },
+}[lang];
+---
+
+<Layout title={`${t.nav.garden} — ${t.brand}`} description={copy.description} lang={lang}>
+  <section class="garden">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="page-title">{t.nav.garden}</h1>
+
+    <p class="page-intro">{copy.intro}</p>
+
+    <ul class="legend">
+      {Object.entries(stages).map(([key, s]) => (
+        <li>{s.icon} {t.stages[key as keyof typeof stages]}</li>
+      ))}
+    </ul>
+
+    {topics.length > 0 && (
+      <div class="topics">
+        {topics.map((topic) => <span>{topic}</span>)}
+      </div>
+    )}
+
+    <div class="grid">
+      {posts.map((post) => <PostCard post={post} pageLang={lang} />)}
+    </div>
+  </section>
+</Layout>
+
+<style>
+.garden {
+  padding: 80px 0 120px;
+}
+
+.page-intro {
+  max-width: 620px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 35px 0 25px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.topics span {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 50px;
+}
+</style>

@@ -1,7 +1,7 @@
 ---
 import Layout from "./Layout.astro";
-import { stages, formatDate, type Post } from "../lib/posts";
-import { useTranslations } from "../i18n/ui";
+import { stages, formatDate, getTranslation, urlOf, type Post } from "../lib/posts";
+import { useTranslations, prefixOf } from "../i18n/ui";
 
 interface Props {
   post: Post;
@@ -11,10 +11,16 @@ const { post } = Astro.props;
 const { title, description, lang, stage, planted, tended, topics, draft } = post.data;
 const t = useTranslations(lang);
 const isBite = post.collection === "bites";
-const backHref = `${lang === "ar" ? "/ar" : ""}/${post.collection}`;
+const backHref = `${prefixOf(lang)}/${post.collection}`;
+
+// Language switch goes to the translation, or to the other language's list if there is none yet
+const translation = await getTranslation(post);
+const alternate = translation
+  ? urlOf(translation)
+  : `${prefixOf(lang === "ar" ? "en" : "ar")}/${post.collection}`;
 ---
 
-<Layout title={`${title} — Nasser’s Bites`} description={description} lang={lang}>
+<Layout title={`${title} — ${t.brand}`} description={description} lang={lang} alternate={alternate}>
   <article class="post">
     <a class="back-link" href={backHref}>{isBite ? t.allBites : t.allArticles}</a>
 

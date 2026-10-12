@@ -1,25 +1,32 @@
 ---
 import "../styles/global.css";
+import { useTranslations, prefixOf, type Lang } from "../i18n/ui";
 
 interface Props {
   title?: string;
   description?: string;
-  lang?: "en" | "ar";
+  lang?: Lang;
+  // Same page in the other language; defaults to swapping the /ar prefix
+  alternate?: string;
 }
 
-const {
-  title = "Nasser’s Bites",
-  description = "Small pieces of pharmacy, medicine & things worth knowing.",
-  lang = "en",
-} = Astro.props;
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
+const { title = t.brand, description = t.siteDescription } = Astro.props;
+
+const prefix = prefixOf(lang);
+const current = Astro.url.pathname;
+const otherLang: Lang = lang === "ar" ? "en" : "ar";
+const alternate =
+  Astro.props.alternate ??
+  (lang === "ar" ? current.replace(/^\/ar(?=\/|$)/, "") || "/" : `/ar${current === "/" ? "" : current}`);
 
 const nav = [
-  { href: "/bites", label: "Bites" },
-  { href: "/articles", label: "Articles" },
-  { href: "/garden", label: "Garden" },
-  { href: "/about", label: "About" },
+  { href: `${prefix}/bites`, label: t.nav.bites },
+  { href: `${prefix}/articles`, label: t.nav.articles },
+  { href: `${prefix}/garden`, label: t.nav.garden },
+  { href: `${prefix}/about`, label: t.nav.about },
 ];
-const current = Astro.url.pathname;
 ---
 
 <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
@@ -46,7 +53,7 @@ const current = Astro.url.pathname;
 
   <body>
     <nav>
-      <a class="brand" href="/">Nasser’s Bites</a>
+      <a class="brand" href={prefix || "/"}>{t.brand}</a>
 
       <div class="nav-links">
         {nav.map((item) => (
@@ -54,6 +61,9 @@ const current = Astro.url.pathname;
             {item.label}
           </a>
         ))}
+        <a class="lang-switch" href={alternate} hreflang={otherLang} lang={otherLang}>
+          {t.switchTo}
+        </a>
       </div>
     </nav>
 
@@ -98,6 +108,16 @@ nav a {
 
 .nav-links a[aria-current="page"] {
   color: var(--accent);
+}
+
+.lang-switch {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.lang-switch:hover {
+  border-color: var(--accent);
 }
 
 .nav-links a:hover,

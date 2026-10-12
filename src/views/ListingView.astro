@@ -1,0 +1,74 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getListing, type PostCollection } from "../lib/posts";
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+  collection: PostCollection;
+  lang: Lang;
+}
+
+const { collection, lang } = Astro.props;
+const posts = await getListing(collection, lang);
+const t = useTranslations(lang);
+
+const copy = {
+  bites: {
+    en: {
+      eyebrow: "Short notes",
+      intro: "Small, focused explanations — one question, one idea at a time.",
+      empty: "The first bites are still cooking.",
+    },
+    ar: {
+      eyebrow: "ملاحظات قصيرة",
+      intro: "شروحات صغيرة ومركّزة — سؤال واحد، وفكرة واحدة في كل مرة.",
+      empty: "أول البايتس ما زالت قيد التحضير.",
+    },
+  },
+  articles: {
+    en: {
+      eyebrow: "Long reads",
+      intro: "Longer explorations, for the ideas that need more room than a bite.",
+      empty: "The first articles are still being written.",
+    },
+    ar: {
+      eyebrow: "قراءات طويلة",
+      intro: "استكشافات أطول، للأفكار التي تحتاج مساحة أكبر من بايت.",
+      empty: "أول المقالات ما زالت قيد الكتابة.",
+    },
+  },
+}[collection][lang];
+
+const title = t.nav[collection];
+---
+
+<Layout title={`${title} — ${t.brand}`} lang={lang}>
+  <section class="listing">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="page-title">{title}</h1>
+    <p class="page-intro">{copy.intro}</p>
+
+    <div class="grid">
+      {posts.map((post) => <PostCard post={post} pageLang={lang} />)}
+    </div>
+    {posts.length === 0 && <p class="page-intro">{copy.empty}</p>}
+  </section>
+</Layout>
+
+<style>
+.listing {
+  padding: 80px 0 120px;
+}
+
+.page-intro {
+  max-width: 600px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+</style>

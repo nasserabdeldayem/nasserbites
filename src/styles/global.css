@@ -32,6 +32,11 @@
   line-height: 2;
 }
 
+/* Naskh needs more vertical room than Fraunces */
+[lang="ar"] .page-title {
+  line-height: 1.4;
+}
+
 *,
 *::before,
 *::after {

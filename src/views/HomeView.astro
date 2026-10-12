@@ -1,0 +1,141 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getAllPosts } from "../lib/posts";
+import { prefixOf, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const recent = (await getAllPosts(lang)).slice(0, 6);
+
+const copy = {
+  en: {
+    eyebrow: "A pharmacist's digital notebook",
+    title: ["Small bites.", "Big ideas."],
+    intro: "Notes on pharmacy, medicine, research, and the things I find worth knowing.",
+    button: "Explore the garden →",
+    recentEyebrow: "Recently tended",
+    recentTitle: "Fresh from the garden",
+  },
+  ar: {
+    eyebrow: "دفتر صيدلي رقمي",
+    title: ["قضمات صغيرة.", "أفكار كبيرة."],
+    intro: "ملاحظات عن الصيدلة والطب والبحث العلمي، وعن كل ما أراه يستحق المعرفة.",
+    button: "استكشف الحديقة ←",
+    recentEyebrow: "أحدث ما اعتنيتُ به",
+    recentTitle: "طازج من الحديقة",
+  },
+}[lang];
+---
+
+<Layout lang={lang}>
+  <section class="hero">
+    <p class="eyebrow">{copy.eyebrow}</p>
+
+    <h1>
+      {copy.title[0]}<br />
+      {copy.title[1]}
+    </h1>
+
+    <p class="intro">{copy.intro}</p>
+
+    <a class="button" href={`${prefixOf(lang)}/garden`}>{copy.button}</a>
+  </section>
+
+  <section class="recent">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.recentEyebrow}</p>
+      <h2>{copy.recentTitle}</h2>
+    </div>
+
+    <div class="grid">
+      {recent.map((post) => <PostCard post={post} pageLang={lang} />)}
+    </div>
+  </section>
+</Layout>
+
+<style>
+.hero {
+  padding: 100px 0 140px;
+  max-width: 720px;
+}
+
+.hero .eyebrow {
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 9vw, 110px);
+  line-height: 0.95;
+  font-weight: 500;
+  margin: 0 0 35px;
+}
+
+:global([lang="ar"]) .hero h1 {
+  line-height: 1.35;
+}
+
+.intro {
+  max-width: 560px;
+  font-size: 22px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 14px 22px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.recent {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-heading {
+  margin-bottom: 40px;
+}
+
+.section-heading h2 {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 70px 0 100px;
+  }
+
+  .intro {
+    font-size: 19px;
+  }
+
+  .recent {
+    padding: 60px 0;
+  }
+
+  .section-heading h2 {
+    font-size: 38px;
+  }
+}
+</style>

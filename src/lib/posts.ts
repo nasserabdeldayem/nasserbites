@@ -26,17 +26,22 @@ export async function getPosts(collection: PostCollection, lang: Lang = 'en') {
 // other language that have no translation yet
 export async function getListing(collection: PostCollection, lang: Lang = 'en') {
   const posts = (await getCollection(collection) as Post[]).filter(isVisible);
-  const translated = new Set(
-    posts.filter((p) => p.data.lang === lang).map((p) => p.data.translationKey ?? slugOf(p)),
-  );
-  return posts
-    .filter((p) => p.data.lang === lang || !translated.has(p.data.translationKey ?? slugOf(p)))
-    .sort(byNewest);
+  const translated = new Set(posts.filter((p) => p.data.lang === lang).map(keyOf));
+  return posts.filter((p) => p.data.lang === lang || !translated.has(keyOf(p))).sort(byNewest);
 }
 
 export async function getAllPosts(lang: Lang = 'en') {
   const [bites, articles] = await Promise.all([getListing('bites', lang), getListing('articles', lang)]);
   return [...bites, ...articles].sort(byNewest);
+}
+
+const keyOf = (post: Post) => post.data.translationKey ?? slugOf(post);
+
+// The same post in the other language, if it has been written
+export async function getTranslation(post: Post) {
+  const other: Lang = post.data.lang === 'ar' ? 'en' : 'ar';
+  const posts = await getPosts(post.collection, other);
+  return posts.find((p) => keyOf(p) === keyOf(post));
 }
 
 // "en/metformin" -> "metformin"
