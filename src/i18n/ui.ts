@@ -18,7 +18,7 @@ export const ui = {
     stages: { seedling: 'Seedling', budding: 'Budding', evergreen: 'Evergreen' },
   },
   ar: {
-    brand: 'Nasser’s Bites',
+    brand: 'قضمات ناصر',
     siteDescription: 'قطع صغيرة من الصيدلة والطب، وأشياء تستحق المعرفة.',
     nav: { bites: 'البايتس', articles: 'المقالات', garden: 'الحديقة', about: 'عن المدونة' },
     switchTo: 'English',
