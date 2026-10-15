@@ -1,0 +1,32 @@
+---
+// A row of short labels, e.g. a list of side effects
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="chips">
+  {items.map((item) => <li>{item}</li>)}
+</ul>
+
+<style>
+:global(.prose) .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+
+.chips li {
+  padding: 6px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+</style>

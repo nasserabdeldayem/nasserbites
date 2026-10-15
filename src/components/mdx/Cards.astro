@@ -1,0 +1,20 @@
+---
+// Grid of <Card>s inside a post: two columns, one on phones
+---
+
+<div class="cards"><slot /></div>
+
+<style>
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 30px 0;
+}
+
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

@@ -1,0 +1,134 @@
+---
+// Boxed note inside a post.
+// result: dark summary bar · tips: warm advice box · note: side-ruled aside · danger: urgent warning
+interface Props {
+  type?: "result" | "tips" | "note" | "danger";
+  title?: string;
+}
+
+const { type = "note", title } = Astro.props;
+---
+
+<aside class:list={["callout", type]}>
+  {title && <p class="callout-title">{type === "danger" && <span class="bang" aria-hidden="true">!</span>}{title}</p>}
+  <slot />
+</aside>
+
+<style>
+.callout {
+  margin: 30px 0;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.callout :global(p) {
+  margin: 0;
+}
+
+.callout :global(ul) {
+  margin: 0;
+}
+
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* result */
+.result {
+  padding: 18px 24px;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 12px;
+}
+
+.result :global(strong) {
+  color: var(--accent);
+}
+
+/* tips */
+.tips {
+  padding: 22px 26px;
+  background: #fbe6d6;
+  border-radius: 12px;
+}
+
+.tips .callout-title {
+  color: #b5531d;
+  font-size: 19px;
+}
+
+:global(.prose) .tips :global(ul) {
+  columns: 2;
+  column-gap: 40px;
+}
+
+.tips :global(li) {
+  break-inside: avoid;
+}
+
+.tips :global(li::marker) {
+  color: var(--accent);
+}
+
+/* note */
+.note {
+  padding: 4px 20px;
+  border-inline-start: 3px solid var(--accent);
+  color: var(--text-body);
+}
+
+/* danger */
+.danger {
+  padding: 26px;
+  background: #f7e0d8;
+  border: 1px solid #e8c1b4;
+  border-radius: 14px;
+}
+
+.danger .callout-title {
+  color: #b23c1c;
+  font-size: 26px;
+}
+
+.bang {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #b23c1c;
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+:global(.prose) .danger :global(ul) {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.danger :global(li) {
+  padding: 12px 18px;
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  :global(.prose) .tips :global(ul) {
+    columns: 1;
+  }
+
+  .danger {
+    padding: 20px 16px;
+  }
+}
+</style>

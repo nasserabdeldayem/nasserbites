@@ -159,6 +159,19 @@ main {
   padding-inline-start: 1.4em;
 }
 
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 55px 0;
+}
+
+/* Small print at the end of a post, e.g. a medical disclaimer */
+.prose .disclaimer {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
 .prose code {
   font-size: 0.9em;
   background: var(--surface);

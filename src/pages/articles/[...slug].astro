@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content";
 import PostLayout from "../../layouts/PostLayout.astro";
+import { mdxComponents } from "../../components/mdx";
 import { getPosts, slugOf, type Post } from "../../lib/posts";
 
 export async function getStaticPaths() {
@@ -13,5 +14,5 @@ const { Content } = await render(post);
 ---
 
 <PostLayout post={post}>
-  <Content />
+  <Content components={mdxComponents} />
 </PostLayout>
