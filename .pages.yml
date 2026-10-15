@@ -29,7 +29,7 @@ content:
       - &tended { name: tended, label: Last tended, type: date, default: "", options: { format: yyyy-MM-dd } }
       - &topics { name: topics, label: Topics, type: string, list: true }
       - &draft { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
-      - &body { name: body, label: Body, type: rich-text, options: { format: markdown } }
+      - &body { name: body, label: Body (Markdown), type: code, options: { format: mdx } }
 
   - name: bites-ar
     label: Bites · العربية

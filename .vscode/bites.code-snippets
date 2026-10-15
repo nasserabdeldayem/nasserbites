@@ -1,0 +1,69 @@
+{
+  // Type a prefix in a new .mdx file and press Tab to fill it in
+  "Bite (English)": {
+    "prefix": "bite",
+    "description": "New English bite",
+    "body": [
+      "---",
+      "title: ${1:Your question or idea as a title}",
+      "description: ${2:One or two sentences that sum it up.}",
+      "lang: en",
+      "translationKey: ${TM_FILENAME_BASE}",
+      "stage: ${3|seedling,budding,evergreen|}",
+      "planted: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "topics: [${4:Pharmacology}]",
+      "draft: true",
+      "---",
+      "",
+      "## ${5:First heading}",
+      "",
+      "$0"
+    ]
+  },
+  "Bite (Arabic)": {
+    "prefix": "bite-ar",
+    "description": "قضمة جديدة بالعربية",
+    "body": [
+      "---",
+      "title: ${1:العنوان}",
+      "description: ${2:جملة أو جملتان تلخّص الفكرة.}",
+      "lang: ar",
+      "translationKey: ${TM_FILENAME_BASE}",
+      "stage: ${3|seedling,budding,evergreen|}",
+      "planted: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "topics: [${4:علم الأدوية}]",
+      "draft: true",
+      "---",
+      "",
+      "## ${5:العنوان الأول}",
+      "",
+      "$0"
+    ]
+  },
+  "Callout box": {
+    "prefix": "callout",
+    "description": "Boxed note: result, tips, note or danger",
+    "body": [
+      "<Callout type=\"${1|tips,note,result,danger|}\" title=\"${2:Title}\">",
+      "",
+      "$0",
+      "",
+      "</Callout>"
+    ]
+  },
+  "Cards grid": {
+    "prefix": "cards",
+    "description": "Grid of cards",
+    "body": [
+      "<Cards>",
+      "  <Card title=\"${1:Title}\">${2:Text}</Card>",
+      "  <Card title=\"${3:Title}\">${4:Text}</Card>",
+      "</Cards>"
+    ]
+  },
+  "Chips row": {
+    "prefix": "chips",
+    "description": "Row of short labels",
+    "body": ["<Chips items={[\"${1:one}\", \"${2:two}\", \"${3:three}\"]} />"]
+  }
+}

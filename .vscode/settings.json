@@ -1,0 +1,6 @@
+{
+  // Type a snippet prefix (bite, bite-ar, callout, cards, chips) and press Tab
+  "editor.tabCompletion": "onlySnippets",
+  "[mdx]": { "editor.wordWrap": "on" },
+  "[markdown]": { "editor.wordWrap": "on" }
+}
