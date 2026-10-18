@@ -1,0 +1,87 @@
+---
+// Card that opens a video on its own site, for videos whose owners don't allow embedding
+interface Props {
+  href: string;
+  title: string;
+  source: string;
+}
+
+const { href, title, source } = Astro.props;
+---
+
+<a class="video-link" href={href} target="_blank" rel="noopener">
+  <span class="play" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
+  </span>
+  <span class="text">
+    <span class="title" dir="ltr">{title}</span>
+    <span class="source">{source}</span>
+    {Astro.slots.has("default") && <span class="note"><slot /></span>}
+  </span>
+</a>
+
+<style>
+.video-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 16px 0;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+
+.video-link:hover,
+.video-link:focus-visible {
+  border-color: var(--accent);
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+}
+
+/* Keep the play triangle pointing right in RTL too */
+.play svg {
+  transform: translateX(1px);
+}
+
+.text {
+  display: grid;
+  gap: 2px;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.5;
+  text-align: start;
+  unicode-bidi: plaintext;
+}
+
+.source {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.note {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+.note :global(p) {
+  margin: 0;
+}
+</style>
