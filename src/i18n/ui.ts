@@ -15,6 +15,10 @@ export const ui = {
     planted: 'Planted',
     tended: 'Last tended',
     draft: 'Draft',
+    share: 'Share',
+    shareTitle: 'Found this useful? Share it',
+    copyLink: 'Copy link',
+    copied: 'Link copied',
     stages: { seedling: 'Seedling', budding: 'Budding', evergreen: 'Evergreen' },
   },
   ar: {
@@ -31,6 +35,10 @@ export const ui = {
     planted: 'زُرعت',
     tended: 'آخر عناية',
     draft: 'مسودة',
+    share: 'مشاركة',
+    shareTitle: 'وجدتها مفيدة؟ شاركها',
+    copyLink: 'نسخ الرابط',
+    copied: 'تم نسخ الرابط',
     stages: { seedling: 'بذرة', budding: 'برعم', evergreen: 'دائمة الخضرة' },
   },
 } as const;

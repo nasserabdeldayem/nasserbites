@@ -18,5 +18,7 @@ const arabic404 = {
 
 // https://astro.build/config
 export default defineConfig({
+  // Live address, used to build full links (share buttons). Update when you add your own domain.
+  site: 'https://nasserbites.na-abdeldayem.workers.dev',
   integrations: [mdx(), arabic404],
 });

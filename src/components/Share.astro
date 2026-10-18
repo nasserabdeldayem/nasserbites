@@ -1,0 +1,115 @@
+---
+import { useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+  title: string;
+  lang: Lang;
+}
+
+const { title, lang } = Astro.props;
+const t = useTranslations(lang);
+const url = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const u = encodeURIComponent(url);
+const text = encodeURIComponent(title);
+
+const links = [
+  { label: "WhatsApp", href: `https://wa.me/?text=${text}%20${u}` },
+  { label: "Telegram", href: `https://t.me/share/url?url=${u}&text=${text}` },
+  { label: "X", href: `https://x.com/intent/post?text=${text}&url=${u}` },
+  { label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+];
+---
+
+<section class="share" id="share" data-url={url} data-title={title}>
+  <p class="share-title">{t.shareTitle}</p>
+  <div class="share-buttons">
+    <button type="button" class="pill primary" data-share hidden>{t.share}</button>
+    {links.map((l) => (
+      <a class="pill" href={l.href} target="_blank" rel="noopener">{l.label}</a>
+    ))}
+    <button type="button" class="pill" data-copy data-copied={t.copied}>{t.copyLink}</button>
+  </div>
+</section>
+
+<script>
+  // Native share sheet where the device has one; copy-link fallback everywhere
+  for (const box of document.querySelectorAll<HTMLElement>(".share")) {
+    const { url = location.href, title = document.title } = box.dataset;
+    const shareBtn = box.querySelector<HTMLButtonElement>("[data-share]");
+    if (shareBtn && navigator.share) {
+      shareBtn.hidden = false;
+      shareBtn.addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
+    }
+
+    const copyBtn = box.querySelector<HTMLButtonElement>("[data-copy]");
+    copyBtn?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        const label = copyBtn.textContent;
+        copyBtn.textContent = copyBtn.dataset.copied ?? label;
+        setTimeout(() => (copyBtn.textContent = label), 2000);
+      } catch {
+        prompt("", url);
+      }
+    });
+  }
+
+  // The small share button at the top: native sheet, or jump to the share row
+  for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-share-top]")) {
+    btn.addEventListener("click", () => {
+      const box = document.querySelector<HTMLElement>(".share");
+      const url = box?.dataset.url ?? location.href;
+      const title = box?.dataset.title ?? document.title;
+      if (navigator.share) navigator.share({ title, url }).catch(() => {});
+      else box?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+</script>
+
+<style>
+.share {
+  margin-top: 70px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+}
+
+.share-title {
+  margin: 0 0 16px;
+  font-family: var(--font-serif);
+  font-size: 22px;
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  padding: 9px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font: 500 15px/1.4 var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pill:hover,
+.pill:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pill.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.pill.primary:hover {
+  color: white;
+  filter: brightness(0.95);
+}
+</style>
