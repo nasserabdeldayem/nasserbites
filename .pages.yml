@@ -28,6 +28,8 @@ content:
       - &planted { name: planted, label: Planted, type: date, required: true, options: { format: yyyy-MM-dd } }
       - &tended { name: tended, label: Last tended, type: date, default: "", options: { format: yyyy-MM-dd } }
       - &topics { name: topics, label: Topics, type: string, list: true }
+      - &image { name: image, label: Share image (1200×630), type: image, description: "Shown when the link is shared on WhatsApp, X, Facebook" }
+      - &imageAlt { name: imageAlt, label: Share image description, type: string }
       - &draft { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
       - &body { name: body, label: Body (Markdown), type: code, options: { format: mdx } }
 
@@ -53,6 +55,8 @@ content:
       - *planted
       - *tended
       - *topics
+      - *image
+      - *imageAlt
       - *draft
       - *body
 
@@ -78,6 +82,8 @@ content:
       - *planted
       - *tended
       - *topics
+      - *image
+      - *imageAlt
       - *draft
       - *body
 
@@ -103,5 +109,7 @@ content:
       - *planted
       - *tended
       - *topics
+      - *image
+      - *imageAlt
       - *draft
       - *body

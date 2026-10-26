@@ -15,6 +15,9 @@ const post = z.object({
   // The CMS saves an empty date as "" — treat that as "not set"
   tended: z.preprocess((v) => (v === '' || v === null ? undefined : v), z.coerce.date().optional()),
   topics: z.array(z.string()).default([]),
+  // Share thumbnail (1200×630) shown when the link is posted on WhatsApp, X, Facebook…
+  image: z.string().optional(),
+  imageAlt: z.string().optional(),
   draft: z.boolean().default(false),
 });
 

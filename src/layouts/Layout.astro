@@ -8,11 +8,20 @@ interface Props {
   lang?: Lang;
   // Same page in the other language; defaults to swapping the /ar prefix
   alternate?: string;
+  // Share thumbnail, a path under /public, e.g. "/og/glp-1-patients-ar.jpg"
+  image?: string;
+  imageAlt?: string;
+  type?: "website" | "article";
 }
 
-const { lang = "en" } = Astro.props;
+const { lang = "en", image, imageAlt, type = "website" } = Astro.props;
 const t = useTranslations(lang);
 const { title = t.brand, description = t.siteDescription } = Astro.props;
+
+// Open Graph tags need absolute URLs
+const site = Astro.site ?? Astro.url;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+const imageUrl = image ? new URL(image, site).href : undefined;
 
 const prefix = prefixOf(lang);
 const current = Astro.url.pathname;
@@ -37,6 +46,24 @@ const nav = [
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Link previews on WhatsApp, Telegram, X, Facebook, LinkedIn -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={t.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:locale" content={lang === "ar" ? "ar_AR" : "en_GB"} />
+    {imageUrl && (
+      <>
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+      </>
+    )}
+    <meta name="twitter:card" content={imageUrl ? "summary_large_image" : "summary"} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

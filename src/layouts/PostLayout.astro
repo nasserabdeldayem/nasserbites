@@ -21,7 +21,15 @@ const alternate = translation
   : `${prefixOf(lang === "ar" ? "en" : "ar")}/${post.collection}`;
 ---
 
-<Layout title={`${title} — ${t.brand}`} description={description} lang={lang} alternate={alternate}>
+<Layout
+  title={`${title} — ${t.brand}`}
+  description={description}
+  lang={lang}
+  alternate={alternate}
+  image={post.data.image}
+  imageAlt={post.data.imageAlt}
+  type="article"
+>
   <article class="post">
     <a class="back-link" href={backHref}>{isBite ? t.allBites : t.allArticles}</a>
 

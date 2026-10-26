@@ -1,0 +1,77 @@
+---
+// Image with a caption and a credit line (required by Creative Commons licences)
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  credit?: string;
+  creditHref?: string;
+  license?: string;
+  licenseHref?: string;
+}
+
+const { src, alt, caption, credit, creditHref, license, licenseHref } = Astro.props;
+const photo = Astro.url.pathname.startsWith("/ar") ? "صورة" : "Photo";
+---
+
+<figure class="figure">
+  <img src={src} alt={alt} loading="lazy" decoding="async" />
+  {(caption || credit) && (
+    <figcaption>
+      {caption && <span class="caption">{caption}</span>}
+      {credit && (
+        <span class="credit" dir="ltr">
+          {photo}: {creditHref ? <a href={creditHref} target="_blank" rel="noopener">{credit}</a> : credit}
+          {license && (
+            <>
+              {" · "}
+              {licenseHref ? <a href={licenseHref} target="_blank" rel="noopener license">{license}</a> : license}
+            </>
+          )}
+        </span>
+      )}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+.figure {
+  margin: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+figcaption {
+  display: grid;
+  gap: 2px;
+  padding: 12px 16px 14px;
+}
+
+.caption {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.credit {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: start;
+  unicode-bidi: plaintext;
+}
+
+.credit a {
+  color: inherit;
+}
+</style>
