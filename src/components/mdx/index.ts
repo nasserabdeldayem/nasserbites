@@ -4,6 +4,7 @@ import Card from './Card.astro';
 import Cards from './Cards.astro';
 import Chips from './Chips.astro';
 import Figure from './Figure.astro';
+import Video from './Video.astro';
 import VideoLink from './VideoLink.astro';
 
-export const mdxComponents = { Callout, Card, Cards, Chips, Figure, VideoLink };
+export const mdxComponents = { Callout, Card, Cards, Chips, Figure, Video, VideoLink };

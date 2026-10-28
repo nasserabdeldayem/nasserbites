@@ -1,0 +1,38 @@
+---
+// Self-hosted video (a file in /public/videos) that plays inside the post
+interface Props {
+  src: string;
+  poster?: string;
+  caption?: string;
+}
+
+const { src, poster, caption } = Astro.props;
+---
+
+<figure class="video">
+  <video controls playsinline preload="metadata" poster={poster}>
+    <source src={src} type="video/mp4" />
+  </video>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+.video {
+  margin: 30px 0;
+}
+
+video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--text);
+  border-radius: 12px;
+}
+
+figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+</style>
